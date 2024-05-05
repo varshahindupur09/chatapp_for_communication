@@ -29,5 +29,3 @@ chatapp_backend/
 ├── target/                                       # Compiled and packaged output (created by Maven)
 ├── pom.xml                                       # Maven build file
 └── README.md                                     # Project documentation
-
-####
