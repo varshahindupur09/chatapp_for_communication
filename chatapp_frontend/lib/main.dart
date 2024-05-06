@@ -1,8 +1,17 @@
+// chatapp_frontend/lib/main.dart
+// Starting with the login screen first.
+// Upon successful login, navigate to the chat screen with the JWT token.
+// Using the WebSocket connection in the chat screen once authenticated.
+
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:chatapp_frontend/screens/login_screen.dart'; // LoginScreen
+import 'package:chatapp_frontend/screens/chat_screen.dart'; // ChatScreen
 
 void main() => runApp(ChatApp());
+
+final url_ws = 'ws://10.0.0.158:8080/chat';
 
 class ChatApp extends StatelessWidget {
   @override
@@ -12,83 +21,8 @@ class ChatApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChatScreen(),
-    );
-  }
-}
-
-class ChatScreen extends StatefulWidget {
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _controller = TextEditingController();
-  final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse(
-        'ws://10.0.0.158:8080/user/your-user-id'), // Replace with WebSocket server URL and user ID
-  );
-
-  List<String> _messages = [];
-
-  @override
-  void dispose() {
-    // Close WebSocket connection when the widget is disposed
-    channel.sink.close(status.goingAway);
-    super.dispose();
-  }
-
-  void _sendMessage() {
-    if (_controller.text.isNotEmpty) {
-      // Format the message to include the user ID and message content
-      channel.sink.add('your-user-id: ${_controller.text}');
-      _controller.clear();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Multi-User WebSocket Chat'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: StreamBuilder(
-                stream: channel.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    // Add new messages to the list
-                    _messages.add(snapshot.data.toString());
-                  }
-                  return ListView.builder(
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(_messages[index]),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: 'Send a message',
-              ),
-              onSubmitted: (_) => _sendMessage(),
-            ),
-            ElevatedButton(
-              onPressed: _sendMessage,
-              child: Text('Send'),
-            ),
-          ],
-        ),
-      ),
+      // Ensuring the initial screen is the ChatScreen
+      home: AuthScreen(), // This ensures the app starts with the login screen
     );
   }
 }

@@ -17,6 +17,7 @@ import com.chatbotapp.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*")  // Allow requests from any origin (for development)
 public class AuthController {
 
     @Autowired
@@ -34,7 +35,7 @@ public class AuthController {
         String username = userMap.get("username");
         String password = userMap.get("password");
 
-        // Create and save the user (you may modify this part for simplicity)
+        // Create and save the user
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);  // This should ideally be hashed

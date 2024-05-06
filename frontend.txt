@@ -1,0 +1,22 @@
+chatapp_frontend/
+├── .dart_tool/
+├── .idea/
+├── android/
+├── build/
+├── ios/
+├── lib/
+│   ├── screens/
+│   │  └── chat_screen.dart/
+│   │  └── login_screen.dart/
+│   ├── main.dart
+├── linux/
+├── macos/
+├── test/
+├── web/
+├── windows/
+├── .gitignore
+├── .metadata
+├── analysis_options.yaml
+├── chatapp_frontend.iml
+├── pubspec.lock
+├── pubspec.yaml

@@ -32,4 +32,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+
+    // creating loadUserById if needed for JWT later (just in case)
+    public UserDetails loadUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (!user.isPresent()) {
+            throw new UsernameNotFoundException("User not found with id: " + id);
+        }
+
+        return UserPrincipal.create(user.get());
+    }
 }
+
+// Custom UserDetailsService: This service will load user details (such as username and password) 
+// from MySQL database.
+// It's injected with @Autowired and passed to the AuthenticationManagerBuilder in configure().

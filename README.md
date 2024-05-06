@@ -62,3 +62,18 @@ You can integrate a basic chatbot that listens to user input and responds accord
 
 # steps to start app
 CREATE DATABASE chatapp;
+
+# steps
+brew services start mysql
+mysql -u root
+ALTER USER 'root'@'localhost' IDENTIFIED WITH 'caching_sha2_password' BY 'your_new_password';
+
+# secret key generation
+openssl rand -base64 64
+
+# listening to the correct port:
+i/p:
+lsof -i :8080
+o/p:
+COMMAND   PID           USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    57640 varshahindupur  117u  IPv6 0xcb369a9e3a3277ae      0t0  TCP *:http-alt (LISTEN)

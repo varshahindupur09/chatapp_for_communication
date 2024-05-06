@@ -7,21 +7,30 @@ chatapp_backend/
 │   │   │           ├── config/                  # Configurations (e.g., WebSocketConfig, SecurityConfig, etc.)
 │   │   │           │   └── WebSocketConfig.java
 │   │   │           ├── controller/              # REST and WebSocket controllers
-│   │   │           │   └── ChatController.java
+│   │   │           │   └── ChatController.java # this is not there
 │   │   │           │   └── AuthController.java
 │   │   │           ├── model/                   # Entities (e.g., User, Message)
 │   │   │           │   └── User.java
-
+│   │   │           ├── redis/              # WebSocket handlers, if needed
+│   │   │           │   └── Publisher.java
+│   │   │           │   └── Subscriber.java
+│   │   │           │   └── SubscriberHelper.java
 │   │   │           ├── repository/              # Repositories for interacting with database
 │   │   │           │   └── UserRepository.java
 │   │   │           ├── security/                # Security-related classes (JWT, filters, etc.)
+│   │   │           │   └── JwtAuthenticationFilter.java
 │   │   │           │   └── JwtTokenProvider.java
 │   │   │           │   └── UserPrincipal.java 
+│   │   │           │   └── WebSecurityConfigurerAdapter.java
 │   │   │           ├── service/                 # Services (business logic)
 │   │   │           │   └── CustomUserDetailsService.java #previously wrongly named by you as UserService.java
 │   │   │           │   └── UserService.java
 │   │   │           ├── websockets/              # WebSocket handlers, if needed
-│   │   │           │   └── ChatSocketHandler.java
+│   │   │           │   └── SocketTextHandler.java
+│   │   │           │   └── WebSocketConfig.java
+│   │   │           │   └── WebSocketHelper.java
+│   │   │           │   └── WebSocketSessionManager.java
+│   │   │           ├── ChatApplication.java
 │   │   └── resources/
 │   │       ├── application.properties           # Properties file for configurations (database, Redis, etc.)
 │   │       └── static/                          # Static files (optional)

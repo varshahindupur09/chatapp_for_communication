@@ -1,10 +1,9 @@
-// login_screen.dart
-//  Uri.parse('http://10.0.0.158:8080/auth/login'), // Use your backend IP
+// chatapp_frontend/lib/login_screen.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'chat_screen.dart'; // Import the ChatScreen
+import 'chat_screen.dart'; // Import ChatScreen
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -15,11 +14,11 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoginMode = true;
+  String urlBackend = 'http://10.0.0.158:8080/auth';
 
-  // Personalized for your backend to authenticate with Spring Boot
+  // Function to handle login/signup (mode: 'login' or 'register')
   Future<void> authenticate(String mode) async {
-    final url =
-        'http://127.0.0.1:8080/auth/${mode}'; // Use the correct backend URL
+    final url = '$urlBackend/$mode'; // Backend URL for login/signup
 
     final response = await http.post(
       Uri.parse(url),
@@ -33,21 +32,20 @@ class _AuthScreenState extends State<AuthScreen> {
     );
 
     if (response.statusCode == 200) {
-      final token = jsonDecode(response.body)['token']; // Extract JWT token
-      final username =
-          _usernameController.text; // Pass the username along with the token
+      // Extract the token from the response
+      final token = jsonDecode(response.body)['token'];
+      final username = _usernameController.text;
 
-      // Navigate to ChatScreen, passing the token
+      // Navigate to the chat screen, passing the token and username
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ChatScreen(
-              token: token,
-              username: username), // Send token and username to ChatScreen
+          builder: (context) => ChatScreen(token: token, username: username),
         ),
       );
     } else {
-      print('Authentication failed');
+      // Show an error if the login/signup fails
+      print('Authentication failed: ${response.body}');
     }
   }
 
@@ -69,13 +67,14 @@ class _AuthScreenState extends State<AuthScreen> {
               obscureText: true,
             ),
             ElevatedButton(
-              onPressed: () => authenticate(isLoginMode ? 'login' : 'signup'),
+              onPressed: () => authenticate(isLoginMode ? 'login' : 'register'),
               child: Text(isLoginMode ? 'Login' : 'Signup'),
             ),
             TextButton(
               onPressed: () {
                 setState(() {
-                  isLoginMode = !isLoginMode;
+                  isLoginMode =
+                      !isLoginMode; // Toggle between login and signup mode
                 });
               },
               child: Text(isLoginMode
