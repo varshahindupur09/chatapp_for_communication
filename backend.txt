@@ -1,0 +1,33 @@
+chatapp_backend/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── chatbotapp/
+│   │   │           ├── config/                  # Configurations (e.g., WebSocketConfig, SecurityConfig, etc.)
+│   │   │           │   └── WebSocketConfig.java
+│   │   │           ├── controller/              # REST and WebSocket controllers
+│   │   │           │   └── ChatController.java
+│   │   │           │   └── AuthController.java
+│   │   │           ├── model/                   # Entities (e.g., User, Message)
+│   │   │           │   └── User.java
+
+│   │   │           ├── repository/              # Repositories for interacting with database
+│   │   │           │   └── UserRepository.java
+│   │   │           ├── security/                # Security-related classes (JWT, filters, etc.)
+│   │   │           │   └── JwtTokenProvider.java
+│   │   │           │   └── UserPrincipal.java 
+│   │   │           ├── service/                 # Services (business logic)
+│   │   │           │   └── CustomUserDetailsService.java #previously wrongly named by you as UserService.java
+│   │   │           │   └── UserService.java
+│   │   │           ├── websockets/              # WebSocket handlers, if needed
+│   │   │           │   └── ChatSocketHandler.java
+│   │   └── resources/
+│   │       ├── application.properties           # Properties file for configurations (database, Redis, etc.)
+│   │       └── static/                          # Static files (optional)
+│   │       └── templates/                       # Templates (optional, if you're using something like Thymeleaf)
+├── target/                                       # Compiled and packaged output (created by Maven)
+├── pom.xml                                       # Maven build file
+└── README.md                                     # Project documentation
+
+####
