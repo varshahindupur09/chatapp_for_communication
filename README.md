@@ -55,9 +55,10 @@ The WebSocket server in Spring Boot will handle the communication between multip
 Spring Security can be used to handle authentication (if required) and JWT tokens for securing WebSocket connections.
 Frontend (Flutter App)
 
-Flutter will act as the client for the chat application. It will send and receive messages via WebSocket and communicate with the chatbot through an API or WebSocket.
-Chatbot Logic
+Flutter will act as the client for the chat application. It will send and receive messages via WebSocket and 
+communicate with the chatbot through an API or WebSocket.
 
+Chatbot Logic:
 You can integrate a basic chatbot that listens to user input and responds accordingly (e.g., hardcoded responses or integration with a third-party AI chatbot service like Dialogflow, GPT APIs, etc.).
 
 # steps to start app
@@ -77,3 +78,12 @@ lsof -i :8080
 o/p:
 COMMAND   PID           USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 java    57640 varshahindupur  117u  IPv6 0xcb369a9e3a3277ae      0t0  TCP *:http-alt (LISTEN)
+
+
+# how to start
+cd chatapp_frontend
+flutter run
+
+cd chatapp_backend
+mvn clean install
+mvn spring-boot:run

@@ -17,6 +17,9 @@ public class UserService implements UserDetailsService
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Load a user by username for authentication
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -30,8 +33,19 @@ public class UserService implements UserDetailsService
         return UserPrincipal.create(user.get());
     }
 
+    /**
+     * Save a new user to the database
+     */
     public User saveUser(User user)
     {
         return userRepository.save(user);
     }
+
+    /**
+     * Check if a user exists by username
+     */
+   public boolean existsByUsername(String username) {
+    return userRepository.existsByUsername(username);
+    }
+
 } 

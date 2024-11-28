@@ -1,23 +1,25 @@
 // Controller/AuthController.java
+
 package com.chatbotapp.controller;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import com.chatbotapp.model.User;
 import com.chatbotapp.security.JwtTokenProvider;
 import com.chatbotapp.service.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")  // Allow requests from any origin (for development)
 public class AuthController {
 
     @Autowired
@@ -29,16 +31,21 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-   @PostMapping("/register")
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody Map<String, String> userMap) {
-        // Extract username and password directly from Map
         String username = userMap.get("username");
         String password = userMap.get("password");
 
-        // Create and save the user
+        if (userService.existsByUsername(username)) {
+            return ResponseEntity.badRequest().body("Username is already taken.");
+        }
+
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);  // This should ideally be hashed
+        user.setPassword(passwordEncoder.encode(password));
         userService.saveUser(user);
 
         return ResponseEntity.ok("User registered successfully");
@@ -46,19 +53,25 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginMap) {
-        // Directly retrieve the username and password from Map
         String username = loginMap.get("username");
         String password = loginMap.get("password");
 
-        // Authenticate user
-        Authentication authentication = authenticationManager.authenticate(
+        try {
+            Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Generate JWT Token (if you are using JWT)
-        String token = jwtTokenProvider.generateToken(authentication);
+            String token = jwtTokenProvider.generateToken(authentication);
 
-        return ResponseEntity.ok(token);  // Return token directly
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", username);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid username or password");
+        }
     }
 }
+
